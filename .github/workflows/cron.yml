@@ -1,0 +1,21 @@
+name: Supabase Keep Alive
+on:
+  schedule:
+    - cron: '0 0 * * *' # S'exécute tous les jours à minuit
+  workflow_dispatch:      # Permet de le lancer manuellement pour tester
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run ping script
+        env:
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python keep_alive.py
